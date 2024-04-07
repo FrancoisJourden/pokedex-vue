@@ -6,11 +6,12 @@ axios.defaults.baseURL = 'https://pokeapi.co/api/v2/'
 </script>
 
 <template>
-  <header>
+  <header class="bg-red-500 flex gap-4 text-white p-2">
+    <h1 class="uppercase font-bold">Pokedex</h1>
     <nav>
       <RouterLink to="/">Home</RouterLink>
     </nav>
   </header>
 
-  <RouterView />
+  <RouterView class="py-2 px-4"/>
 </template>

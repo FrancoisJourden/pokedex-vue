@@ -1,9 +1,10 @@
 <script setup lang="ts">
 
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import axios from 'axios'
 import PokemonCard from '@/components/PokemonCard.vue'
 import { IconLoader2 } from '@tabler/icons-vue'
+import PageSelector from '@/components/PageSelector.vue'
 
 const totalCount = ref<number | null>(null)
 const species = ref<Array<{ name: String, url: string }> | null>(null)
@@ -33,21 +34,21 @@ function pageCount(): number {
   return Math.trunc(totalCount.value / pageLength.value) + (totalCount.value % pageLength.value > 0 ? 1 : 0)
 }
 
+watch(currentPageNumber, loadSpecies)
+
 </script>
 
 <template>
-  <div class="max-w-7xl m-auto">
+  <div class="max-w-7xl m-auto flex flex-col gap-2">
     <div>
-      Quantity: <select v-model="pageLength" @change="loadSpecies">
-      <option v-for="i in 5" :value="20 * i" :key="i">{{ 20 * i }}</option>
-    </select>
-      Page: <select v-if="totalCount" v-model="currentPageNumber" @change="loadSpecies">
-      <option v-for="i in pageCount()" :value="i" :key="i">{{ i }}</option>
-    </select>
+      <select v-model="pageLength" @change="loadSpecies" class="px-2">
+        <option v-for="i in 5" :value="20 * i" :key="i">{{ 20 * i }}</option>
+      </select> Species per page
     </div>
     <div v-if="species" class="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
       <PokemonCard v-for="(specie, index) in species" :key="index" :specie-id="specie.name.toString()" />
     </div>
     <IconLoader2 v-else :size="48" class="m-auto animate-spin" />
+    <PageSelector v-if="totalCount" v-model="currentPageNumber" :max-page="pageCount()" />
   </div>
 </template>
