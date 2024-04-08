@@ -4,6 +4,8 @@ import axios from 'axios'
 import type { Specie } from '@/models/Specie'
 import type { Pokemon } from '@/models/Pokemon'
 import {IconLoader2} from '@tabler/icons-vue'
+import router from '@/router'
+
 
 const props = defineProps({
   'specieId': { required: true, type: [Number,String] }
@@ -19,7 +21,7 @@ onMounted(async () => {
 
 async function loadSpecie(id: Number|string) {
   const response = await axios.get<Specie>(`pokemon-species/${id}`)
-  specie.value = await response.data
+  specie.value = response.data
 }
 
 async function loadPokemon(specie: Specie|null) {
@@ -29,15 +31,20 @@ async function loadPokemon(specie: Specie|null) {
   pokemon.value = await response.data
 }
 
+function openSpecieView(){
+  if(specie.value == null) return;
+  router.push(`/species/${specie.value.id}`)
+}
+
 </script>
 
 <template>
-  <div class="text-center border rounded">
-    <div v-if="specie && pokemon">{{ specie.name }}
+  <button class="text-center border rounded hover:border-red-500" @click="openSpecieView()">
+    <span v-if="specie && pokemon">{{ specie.name }}
       <img :src="pokemon.sprites.front_default" alt="{{pokemon.name}} sprite" class="m-auto"/>
-    </div>
+    </span>
     <IconLoader2 v-else :size="48" class="m-auto animate-spin"/>
-  </div>
+  </button>
 </template>
 
 <style scoped>

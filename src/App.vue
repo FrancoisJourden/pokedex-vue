@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import axios from 'axios'
+import { onMounted } from 'vue'
+import { initFlowbite } from 'flowbite'
 
 axios.defaults.baseURL = 'https://pokeapi.co/api/v2/'
+
+onMounted(() => {
+  initFlowbite()
+})
+
 </script>
 
 <template>
@@ -13,5 +20,5 @@ axios.defaults.baseURL = 'https://pokeapi.co/api/v2/'
     </nav>
   </header>
 
-  <RouterView class="py-2 px-4"/>
+  <RouterView class="py-2 px-4" />
 </template>

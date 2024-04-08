@@ -3,6 +3,7 @@ export interface Pokemon{
   name: string,
   sprites: Sprites
   types: Array<{slot: number, type: Type}>
+  forms: Array<Form>
 }
 
 export interface Type{
@@ -19,4 +20,9 @@ interface Sprites{
   front_female: string | null,
   front_shiny: string,
   front_shiny_female: string | null,
+}
+
+interface Form {
+  name: string,
+  url: string,
 }
